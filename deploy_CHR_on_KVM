@@ -1,0 +1,7 @@
+Deploy CHR on KVM (Debian).
+
+- Install KVM and virsh
+- Download CHR image and resize
+- Configure networking (create bridge on host)
+- Create VM and import CHR
+- Test and enjoy
