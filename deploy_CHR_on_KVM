@@ -5,3 +5,50 @@ Deploy CHR on KVM (Debian).
 - Configure networking (create bridge on host)
 - Create VM and import CHR
 - Test and enjoy
+
+Prerequisite: Debian 8 (Jessie)
+
+* Install KVM+QEMU+VIRSH:
+
+apt-get install qemu-kvm libvirt-bin virtinst
+
+* Download CHR (You can download the current version, just find the link at https://www.mikrotik.com/download):
+
+wget https://download2.mikrotik.com/routeros/6.38.7/chr-6.38.7.img.zip
+
+* unzip chr-6.38.7.img.zip
+
+* Resize the image at your needs:
+
+qemu-img resize -f raw chr-6.38.7.img +200M
+
+* Move the image to where it belongs:
+
+mv chr-6.38.7.img /var/lib/libvirt/images/
+
+* Configure networking (won't be persistent):
+
+brctl addbr vmbr0
+brctl addif vmbr0 eth2
+ifconfig vmbr0 up
+
+* Create the VM:
+
+virt-install --name Mikrotik --ram 256 --disk path=/var/lib/libvirt/images/chr-6.38.7.img --os-type linux --network bridge=vmbr0 --import
+
+* Start the VM:
+
+virsh
+start Mikrotik
+
+
+
+
+
+References:
+
+- https://wiki.debian.org/KVM
+- https://forum.mikrotik.com/viewtopic.php?t=98981
+- https://www.itfromallangles.com/2011/03/kvm-guests-using-virt-install-to-import-an-existing-disk-image/
+- https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Virtualization_Host_Configuration_and_Guest_Installation_Guide/index.html
+- https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html
