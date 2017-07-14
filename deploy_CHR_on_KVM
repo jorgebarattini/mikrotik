@@ -36,10 +36,11 @@ ifconfig vmbr0 up
 
 virt-install --name Mikrotik --ram 256 --disk path=/var/lib/libvirt/images/chr-6.38.7.img --os-type linux --network bridge=vmbr0 --import
 
-* Start the VM:
+* Start the VM and access console:
 
 virsh
 start Mikrotik
+console Mikrotik
 
 
 
